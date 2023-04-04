@@ -1,45 +1,34 @@
 import java.util.*;
+
 public class Main {
-    public static void main(String args) {
-        List<String> velocidad = new ArrayList<>();
-        velocidad.add("52");
-        velocidad.add("10");
-        velocidad.add("30");
-        velocidad.add("89");
-        velocidad.add("90");
-        velocidad.add("200");
-        velocidad.add("140");
-
-        int f;
-        Integer number = Integer.valueOf(velocidad);
-        for(f=1;f<=100;f++) {
-
-
-            if(number<80){
-                System.out.print("*");
-                System.out.println(velocidad + " no es una velocidad execiva" );
+    public static void main(String[] args) {
+        // Generar una lista de velocidades aleatorias entre 0 y 200
+        List<Integer> velocidad = new ArrayList<>();
+        Random rand = new Random();
+        for (int i = 0; i < 100; i++) {
+            int v = rand.nextInt(201); // Genera un número aleatorio entre 0 y 200
+            velocidad.add(v);
+        }
+        // Iterar sobre la lista y verificar si cada velocidad es excesiva o no
+        for (Integer v : velocidad) {
+            if (v < 80) {
+                System.out.println(v + " no es una velocidad excesiva");
+            } else {
+                System.out.println(v + " es una velocidad excesiva");
             }
-            if(number>80){
-                System.out.print("*");
-                System.out.println(velocidad + " es una velocidad execiva" );
-            }}
+        }
 
-        long tiempoInicio = (System.nanoTime());
-        velocidad.stream().forEach(s->System.out.println(s));
-        long tiempoFin = (System.nanoTime());
+        // Medir el tiempo de ejecución para el procesamiento secuencial y paralelo
+        long tiempoInicio = System.nanoTime();
+        velocidad.stream().forEach(System.out::println);
+        long tiempoFin = System.nanoTime();
         System.out.println();
-        System.out.println("diferencia de tiempo sin programacion paralela"+ ((tiempoFin-tiempoInicio)/1_000_000_000));
-
-        tiempoInicio = (System.nanoTime());
-        velocidad.stream().parallel().forEach(s->System.out.println(s));
-        tiempoFin = (System.nanoTime());
+        System.out.println("Tiempo sin programación paralela: " + ((tiempoFin - tiempoInicio) / 1_000_000_000.0) + " segundos");
+        
+        tiempoInicio = System.nanoTime();
+        velocidad.parallelStream().forEach(System.out::println);
+        tiempoFin = System.nanoTime();
         System.out.println();
-        System.out.println("diferencia de tiempo con programacion paralela"+ ((tiempoFin-tiempoInicio)/1_000_000_000));
-
-
-
-
-
+        System.out.println("Tiempo con programación paralela: " + ((tiempoFin - tiempoInicio) / 1_000_000_000.0) + " segundos");
     }
-
-    }
+}
